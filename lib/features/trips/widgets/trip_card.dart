@@ -85,7 +85,7 @@ class TripCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.lg),
                 Row(
                   children: [
-                    Text('Orçamento usado', style: textTheme.bodySmall),
+                    Text('Orçamento estimado', style: textTheme.bodySmall),
                     const Spacer(),
                     Text(
                       '$percent%',

@@ -4,6 +4,8 @@ import '../../data/models/trip.dart';
 import 'create_trip_screen.dart';
 import 'detail/trip_detail_screen.dart';
 import 'trips_controller.dart';
+import '../../data/models/expense_draft.dart';
+import 'detail/create_expense_screen.dart';
 
 /// Fluxos de navegação de viagens, usados pela Home e pela lista.
 ///
@@ -55,6 +57,30 @@ abstract final class TripNavigation {
             if (context.mounted) openDetail(context, trip, controller);
           },
         ),
+      ),
+    );
+  }
+
+  static Future<void> createExpense(
+    BuildContext context, {
+    required String tripId,
+    required TripsController controller,
+  }) async {
+    final draft = await Navigator.of(context).push<ExpenseDraft>(
+      MaterialPageRoute<ExpenseDraft>(
+        builder: (_) => const CreateExpenseScreen(),
+      ),
+    );
+
+    if (draft == null) return;
+
+    await controller.createExpense(tripId, draft);
+
+    if (!context.mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Despesa cadastrada com sucesso!'),
       ),
     );
   }

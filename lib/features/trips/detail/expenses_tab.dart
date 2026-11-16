@@ -13,9 +13,14 @@ import '../widgets/category_style.dart';
 
 /// Aba "Gastos": lista de despesas, separando planejadas de realizadas.
 class ExpensesTab extends StatelessWidget {
-  const ExpensesTab({super.key, required this.trip});
+  const ExpensesTab({
+    super.key,
+    required this.trip,
+    required this.onAddExpense,
+  });
 
   final Trip trip;
+  final VoidCallback onAddExpense;
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +28,25 @@ class ExpensesTab extends StatelessWidget {
       ..sort((a, b) => a.date.compareTo(b.date));
 
     if (expenses.isEmpty) {
-      return const Center(
-        child: EmptyState(
-          icon: Icons.receipt_long_outlined,
-          title: 'Nenhuma despesa ainda',
-          message: 'As despesas desta viagem aparecerão aqui.',
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.screen),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const EmptyState(
+                icon: Icons.receipt_long_outlined,
+                title: 'Nenhuma despesa ainda',
+                message: 'As despesas desta viagem aparecerão aqui.',
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              FilledButton.icon(
+                onPressed: onAddExpense,
+                icon: const Icon(Icons.add),
+                label: const Text('Nova despesa'),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -35,11 +54,25 @@ class ExpensesTab extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.all(AppSpacing.screen),
       // +1 para o resumo no topo da lista.
-      itemCount: expenses.length + 1,
+      itemCount: expenses.length + 2,
       separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
       itemBuilder: (context, index) {
-        if (index == 0) return _ExpensesSummary(trip: trip);
-        return _ExpenseTile(expense: expenses[index - 1]);
+        if (index == 0) {
+          return _ExpensesSummary(trip: trip);
+        }
+
+        if (index == 1) {
+          return SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              onPressed: onAddExpense,
+              icon: const Icon(Icons.add),
+              label: const Text('Nova despesa'),
+            ),
+          );
+        }
+
+        return _ExpenseTile(expense: expenses[index - 2]);
       },
     );
   }

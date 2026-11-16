@@ -11,6 +11,7 @@ import '../widgets/trip_status_pill.dart';
 import 'expenses_tab.dart';
 import 'itinerary_tab.dart';
 import 'summary_tab.dart';
+import '../trip_navigation.dart';
 
 /// Detalhes de uma viagem, organizados em abas: Resumo, Roteiro e Gastos.
 ///
@@ -58,7 +59,16 @@ class TripDetailScreen extends StatelessWidget {
                     children: [
                       SummaryTab(trip: trip),
                       ItineraryTab(trip: trip),
-                      ExpensesTab(trip: trip),
+                      ExpensesTab(
+                        trip: trip,
+                        onAddExpense: () {
+                          TripNavigation.createExpense(
+                            context,
+                            tripId: tripId,
+                            controller: controller,
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

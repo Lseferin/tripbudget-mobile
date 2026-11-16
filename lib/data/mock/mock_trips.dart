@@ -83,7 +83,7 @@ List<Trip> buildMockTrips() {
     ),
     Trip(
       id: 'portugal-2026',
-      title: 'Portugal com amigos',
+      title: 'Eurotrip (Portugal)',
       destination: 'Lisboa, Portugal',
       startDate: DateTime(2026, 12, 12),
       endDate: DateTime(2026, 12, 19),
