@@ -103,7 +103,7 @@ class _TripsScreenState extends State<TripsScreen> {
                           // quando a lista muda (filtro, inclusão).
                           key: ValueKey(trip.id),
                           trip: trip,
-                          onTap: () => TripNavigation.openDetail(context, trip),
+                          onTap: () => TripNavigation.openDetail(context, trip, controller),
                         );
                       },
                     ),

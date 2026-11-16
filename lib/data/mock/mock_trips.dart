@@ -5,7 +5,7 @@ import '../models/trip.dart';
 import '../models/trip_status.dart';
 
 /// Nome exibido na saudação enquanto não existe autenticação.
-const demoUserName = 'Ana';
+const demoUserName = 'Lívia';
 
 /// Dados demonstrativos, inspirados nas telas do projeto Web.
 ///

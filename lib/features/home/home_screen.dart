@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
               _NextTripCard(
                 trip: nextTrip,
                 daysUntil: controller.daysUntil(nextTrip),
-                onTap: () => TripNavigation.openDetail(context, nextTrip),
+                onTap: () => TripNavigation.openDetail(context, nextTrip, controller),
               ),
               const SizedBox(height: AppSpacing.md),
             ],
@@ -123,7 +123,7 @@ class HomeScreen extends StatelessWidget {
               for (final trip in upcoming.take(2)) ...[
                 TripCard(
                   trip: trip,
-                  onTap: () => TripNavigation.openDetail(context, trip),
+                  onTap: () => TripNavigation.openDetail(context, trip, controller),
                 ),
                 const SizedBox(height: AppSpacing.md),
               ],

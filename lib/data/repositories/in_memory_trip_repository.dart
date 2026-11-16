@@ -2,6 +2,8 @@ import '../mock/mock_trips.dart';
 import '../models/trip.dart';
 import '../models/trip_draft.dart';
 import 'trip_repository.dart';
+import '../models/expense.dart';
+import '../models/expense_draft.dart';
 
 /// Implementação local de [TripRepository], com dados demonstrativos.
 ///
@@ -17,6 +19,7 @@ class InMemoryTripRepository implements TripRepository {
   final List<Trip> _trips;
   final Duration latency;
   int _nextId = 1;
+  int _nextExpenseId = 1;
 
   @override
   Future<List<Trip>> fetchTrips() async {
@@ -40,5 +43,37 @@ class InMemoryTripRepository implements TripRepository {
     );
     _trips.add(trip);
     return trip;
+  }
+
+  @override
+  Future<Trip> createExpense(String tripId, ExpenseDraft draft) async {
+    await Future<void>.delayed(latency);
+
+    final tripIndex = _trips.indexWhere(
+      (trip) => trip.id == tripId,
+    );
+
+    if (tripIndex == -1) {
+      throw StateError('Viagem não encontrada.');
+    }
+
+    final trip = _trips[tripIndex];
+
+    final expense = Expense(
+      id: 'local-expense-${_nextExpenseId++}',
+      description: draft.description,
+      category: draft.category,
+      amountCents: draft.amountCents,
+      date: draft.date,
+      status: draft.status,
+    );
+
+    final updatedTrip = trip.copyWith(
+      expenses: [...trip.expenses, expense],
+    );
+
+    _trips[tripIndex] = updatedTrip;
+
+    return updatedTrip;
   }
 }

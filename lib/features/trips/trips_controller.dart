@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import '../../data/models/trip.dart';
 import '../../data/models/trip_draft.dart';
 import '../../data/repositories/trip_repository.dart';
+import '../../data/models/expense_draft.dart';
 
 /// Estado compartilhado das viagens (o "estado da aplicação").
 ///
@@ -81,4 +82,22 @@ class TripsController extends ChangeNotifier {
 
   static List<Trip> _sorted(List<Trip> trips) =>
       [...trips]..sort((a, b) => a.startDate.compareTo(b.startDate));
+
+  Future<void> createExpense(
+    String tripId,
+    ExpenseDraft draft,
+  ) async {
+    final updatedTrip = await _repository.createExpense(
+      tripId,
+      draft,
+    );
+
+    _trips = _sorted(
+      _trips.map((trip) {
+        return trip.id == tripId ? updatedTrip : trip;
+      }).toList(),
+    );
+
+    notifyListeners();
+  }
 }

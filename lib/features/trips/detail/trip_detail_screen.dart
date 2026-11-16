@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../trips_controller.dart';
+
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/utils/formatters.dart';
@@ -15,39 +17,56 @@ import 'summary_tab.dart';
 /// `DefaultTabController` cria e gerencia o `TabController` internamente, e
 /// o disponibiliza para `TabBar` e `TabBarView` pelo `BuildContext`.
 class TripDetailScreen extends StatelessWidget {
-  const TripDetailScreen({super.key, required this.trip});
+  const TripDetailScreen({
+    super.key,
+    required this.tripId,
+    required this.controller,
+  });
 
-  final Trip trip;
+  final String tripId;
+  final TripsController controller;
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Detalhes da viagem')),
-        body: Column(
-          children: [
-            _TripHeader(trip: trip),
-            const TabBar(
-              tabs: [
-                Tab(text: 'Resumo'),
-                Tab(text: 'Roteiro'),
-                Tab(text: 'Gastos'),
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, child) {
+        final trip = controller.trips.firstWhere(
+          (trip) => trip.id == tripId,
+        );
+
+        return DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Detalhes da viagem'),
+            ),
+            body: Column(
+              children: [
+                _TripHeader(trip: trip),
+
+                const TabBar(
+                  tabs: [
+                    Tab(text: 'Resumo'),
+                    Tab(text: 'Roteiro'),
+                    Tab(text: 'Gastos'),
+                  ],
+                ),
+
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      SummaryTab(trip: trip),
+                      ItineraryTab(trip: trip),
+                      ExpensesTab(trip: trip),
+                    ],
+                  ),
+                ),
               ],
             ),
-            // `Expanded` dá ao `TabBarView` todo o espaço vertical restante.
-            Expanded(
-              child: TabBarView(
-                children: [
-                  SummaryTab(trip: trip),
-                  ItineraryTab(trip: trip),
-                  ExpensesTab(trip: trip),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

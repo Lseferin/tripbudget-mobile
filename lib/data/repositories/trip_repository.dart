@@ -1,5 +1,6 @@
 import '../models/trip.dart';
 import '../models/trip_draft.dart';
+import '../models/expense_draft.dart';
 
 /// Contrato de acesso aos dados de viagens.
 ///
@@ -13,4 +14,6 @@ abstract interface class TripRepository {
   Future<List<Trip>> fetchTrips();
 
   Future<Trip> createTrip(TripDraft draft);
+
+  Future<Trip> createExpense(String tripId, ExpenseDraft draft);
 }

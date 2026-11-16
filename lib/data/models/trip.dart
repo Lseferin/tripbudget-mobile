@@ -87,4 +87,21 @@ class Trip {
 
   static DateTime _dateOnly(DateTime date) =>
       DateTime(date.year, date.month, date.day);
+
+  Trip copyWith({
+    List<Expense>? expenses,
+  }) {
+    return Trip(
+      id: id,
+      title: title,
+      destination: destination,
+      startDate: startDate,
+      endDate: endDate,
+      travelers: travelers,
+      budgetCents: budgetCents,
+      status: status,
+      expenses: expenses ?? this.expenses,
+      activities: activities,
+    );
+  }
 }

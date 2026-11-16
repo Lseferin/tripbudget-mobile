@@ -11,9 +11,18 @@ import 'trips_controller.dart';
 abstract final class TripNavigation {
   /// Empilha a tela de detalhes. O `BuildContext` indica de qual ponto da
   /// árvore de widgets procuramos o `Navigator` mais próximo.
-  static Future<void> openDetail(BuildContext context, Trip trip) {
-    return Navigator.of(context).push<void>(
-      MaterialPageRoute(builder: (_) => TripDetailScreen(trip: trip)),
+  static void openDetail(
+    BuildContext context,
+    Trip trip,
+    TripsController controller,
+  ) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => TripDetailScreen(
+          tripId: trip.id,
+          controller: controller,
+        ),
+      ),
     );
   }
 
@@ -43,7 +52,7 @@ abstract final class TripNavigation {
         action: SnackBarAction(
           label: 'Ver',
           onPressed: () {
-            if (context.mounted) openDetail(context, trip);
+            if (context.mounted) openDetail(context, trip, controller);
           },
         ),
       ),
